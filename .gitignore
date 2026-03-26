@@ -1,2 +1,4 @@
 song_data
 songs/
+.env
+node_modules
