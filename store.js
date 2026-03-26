@@ -1,7 +1,8 @@
 // --- CENTRAL CONFIGURATION ---
 // Format: "YYYY-MM-DDTHH:mm:ss"
 // Set to "" (empty string) to run in LIVE MODE.
-const START_TIME_ANCHOR = "2026-01-10T19:00:00";
+const START_TIME_ANCHOR = "2026-03-21T18:00:00";
+// const START_TIME_ANCHOR = "";
 
 // Used a function to calculate this immediately to ensure 'state' gets the correct value.
 const calculateInitialOffset = () => {

@@ -1,4 +1,4 @@
 song_data
 songs/
-.env
+.env*
 node_modules
