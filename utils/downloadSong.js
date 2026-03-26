@@ -20,6 +20,11 @@ export const downloadSong = async (fileName, filename_as, attempt = 1) => {
     // Safety Check
     if (!fileName || !filename_as) return { success: false, reason: "Invalid Input" };
 
+    // Ensure destination directory exists before creating .part files.
+    if (!fs.existsSync(CONFIG.SONGS_DIR)) {
+        fs.mkdirSync(CONFIG.SONGS_DIR, { recursive: true });
+    }
+
     // 🔒 CHECK LOCK: If this file is already downloading, skip it silently
     if (activeDownloads.has(filename_as)) {
         // console.log(`[Downloader] ⏭️ Skipped duplicate request: ${filename_as}`);
