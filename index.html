@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Radio</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col items-center justify-center select-none font-sans">
+
+    <audio id="audioPlayer" preload="none">
+        <source src="/stream" type="audio/mpeg">
+    </audio>
+
+    <div class="text-center mb-8">
+        <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-green-400 uppercase bg-green-400/10 rounded-full animate-pulse">
+            ● Live Broadcast
+        </div>
+        <h1 class="text-3xl font-bold tracking-wide text-gray-100">My Station</h1>
+    </div>
+
+    <div class="bg-gray-800 p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-6 w-80 border border-gray-700">
+        
+        <div class="flex items-center w-full justify-between gap-6">
+            
+            <button id="playBtn" onclick="togglePlay()" class="group relative bg-indigo-600 hover:bg-indigo-500 text-white w-16 h-16 rounded-full shadow-lg shadow-indigo-600/30 transition-all active:scale-95 cursor-pointer flex items-center justify-center">
+                
+                <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m4-6v6" />
+                </svg>
+                
+                <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                </svg>
+            </button>
+
+            <div class="flex items-center gap-3 flex-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
+                <input 
+                    type="range" 
+                    id="volumeSlider" 
+                    min="0" 
+                    max="1" 
+                    step="0.01" 
+                    value="1" 
+                    oninput="setVolume(this.value)"
+                    class="w-full"
+                >
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        
+        let isPlaying = false;
+
+        function togglePlay() {
+            if (!isPlaying) {
+                // If starting fresh, set src to ensure we grab the live edge
+                if(audio.networkState === HTMLMediaElement.NETWORK_NO_SOURCE || audio.paused) {
+                   audio.load(); // Reloads the stream to sync with "Now"
+                }
+                
+                audio.play().then(() => {
+                    isPlaying = true;
+                    updateUI(true);
+                }).catch(e => console.error("Playback failed", e));
+            } else {
+                audio.pause();
+                // We don't clear src here so they can resume instantly, 
+                // but for live radio, resuming often means jumping to "now".
+                isPlaying = false;
+                updateUI(false);
+            }
+        }
+
+        function updateUI(playing) {
+            if (playing) {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                playBtn.classList.replace('bg-indigo-600', 'bg-rose-600');
+                playBtn.classList.replace('shadow-indigo-600/30', 'shadow-rose-600/30');
+            } else {
+                pauseIcon.classList.add('hidden');
+                playIcon.classList.remove('hidden');
+                playBtn.classList.replace('bg-rose-600', 'bg-indigo-600');
+                playBtn.classList.replace('shadow-rose-600/30', 'shadow-indigo-600/30');
+            }
+        }
+
+        function setVolume(val) {
+            audio.volume = val;
+        }
+
+        // Spacebar to toggle
+        window.addEventListener('keydown', function(e) {
+            if(e.code === 'Space') {
+                e.preventDefault(); 
+                togglePlay();
+            }
+        });
+    </script>
+</body>
+</html>
