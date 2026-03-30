@@ -2,7 +2,6 @@ FROM node:22-alpine AS deps
 
 WORKDIR /app
 
-# fluent-ffmpeg needs the ffmpeg binary available in the container.
 RUN apk add --no-cache ffmpeg
 
 COPY package.json pnpm-lock.yaml ./
@@ -28,8 +27,6 @@ COPY . .
 
 RUN mkdir -p "$SONGS_DIR" "$DATA_DIR" "$TEMP_DIR" \
   && chown -R appuser:appgroup /app /data
-
-VOLUME ["/data"]
 
 EXPOSE 3000
 
