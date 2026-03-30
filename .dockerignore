@@ -1,0 +1,22 @@
+node_modules
+.git
+.gitignore
+.env
+.env.*
+railway.toml
+README*
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Runtime/generated content: keep this on mounted volume instead.
+song_data
+songs
+temp
+
+# Local and test utilities not needed in production image.
+test-*.js
+process_songs.js
+index.html
+Socket.md
+GEMINI.md

@@ -1,0 +1,22 @@
+services:
+  ffmpeg-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ffmpeg-backend
+    restart: unless-stopped
+    env_file:
+      - .env.local
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      SONGS_DIR: /data/songs
+      DATA_DIR: /data/song_data
+      TEMP_DIR: /data/temp
+    ports:
+      - "3000:3000"
+    volumes:
+      - app_data:/data
+
+volumes:
+  app_data:
