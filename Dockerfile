@@ -30,6 +30,6 @@ RUN mkdir -p "$SONGS_DIR" "$DATA_DIR" "$TEMP_DIR" \
 
 EXPOSE 3000
 
-USER appuser
+USER root
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["node", "server.mjs"]
