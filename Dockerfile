@@ -25,6 +25,8 @@ ENV NODE_ENV=production \
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+LABEL org.opencontainers.image.sources="https://github.com/cleign1/ffmpeg-backend"
+
 RUN mkdir -p "$SONGS_DIR" "$DATA_DIR" "$TEMP_DIR" \
   && chown -R appuser:appgroup /app /data
 
